@@ -8,36 +8,29 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --bg-primary: #ffffff;
-    --bg-secondary: #f5f5f3;
-    --bg-tertiary: #eeede9;
-    --text-primary: #1a1a18;
-    --text-secondary: #6b6b67;
-    --text-tertiary: #9b9b97;
-    --border-light: rgba(0,0,0,0.12);
-    --border-mid: rgba(0,0,0,0.22);
-    --radius-md: 8px;
-    --radius-lg: 12px;
+    --bg-primary: #ffffff; --bg-secondary: #f5f5f3; --bg-tertiary: #eeede9;
+    --text-primary: #1a1a18; --text-secondary: #6b6b67; --text-tertiary: #9b9b97;
+    --border-light: rgba(0,0,0,0.12); --border-mid: rgba(0,0,0,0.22);
+    --radius-md: 8px; --radius-lg: 12px;
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --bg-primary: #1e1e1c;
-      --bg-secondary: #2a2a28;
-      --bg-tertiary: #333330;
-      --text-primary: #f0ede8;
-      --text-secondary: #a0a09a;
-      --text-tertiary: #6b6b65;
-      --border-light: rgba(255,255,255,0.1);
-      --border-mid: rgba(255,255,255,0.2);
+      --bg-primary: #1e1e1c; --bg-secondary: #2a2a28; --bg-tertiary: #333330;
+      --text-primary: #f0ede8; --text-secondary: #a0a09a; --text-tertiary: #6b6b65;
+      --border-light: rgba(255,255,255,0.1); --border-mid: rgba(255,255,255,0.2);
     }
   }
   body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg-tertiary); color: var(--text-primary); min-height: 100vh; padding: 1.5rem 1rem; }
-  .container { max-width: 900px; margin: 0 auto; }
-  h1 { font-size: 20px; font-weight: 500; margin-bottom: 1.5rem; }
+  .container { max-width: 960px; margin: 0 auto; }
+  h1 { font-size: 20px; font-weight: 500; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px; }
+  .sync-status { font-size: 12px; font-weight: 400; padding: 3px 10px; border-radius: 20px; display: inline-flex; align-items: center; gap: 5px; }
+  .sync-status.connected { background: #EAF3DE; color: #3B6D11; }
+  .sync-status.connecting { background: #FAEEDA; color: #854F0B; }
+  .sync-status.error { background: #FCEBEB; color: #A32D2D; }
   .form-card { background: var(--bg-primary); border: 0.5px solid var(--border-light); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 1.5rem; }
   .section-title { font-size: 11px; font-weight: 500; color: var(--text-secondary); letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 12px; }
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-  @media (max-width: 480px) { .form-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 500px) { .form-grid { grid-template-columns: 1fr; } }
   .form-field { display: flex; flex-direction: column; gap: 5px; }
   .form-field label { font-size: 12px; color: var(--text-secondary); }
   .form-field input, .form-field select {
@@ -47,25 +40,20 @@
   }
   .form-field input:focus, .form-field select:focus { outline: none; border-color: #378ADD; box-shadow: 0 0 0 2px rgba(55,138,221,0.15); }
   .day-row { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 4px; }
-  .day-btn {
-    padding: 5px 13px; border-radius: var(--radius-md);
-    border: 0.5px solid var(--border-mid); background: var(--bg-primary);
-    color: var(--text-secondary); font-size: 12px; cursor: pointer; transition: all 0.15s;
-  }
+  .day-btn { padding: 5px 13px; border-radius: var(--radius-md); border: 0.5px solid var(--border-mid); background: var(--bg-primary); color: var(--text-secondary); font-size: 12px; cursor: pointer; transition: all 0.15s; }
   .day-btn.selected { background: #E6F1FB; border-color: #378ADD; color: #185FA5; font-weight: 500; }
   .day-btn.uncertain.selected { background: #FAEEDA; border-color: #BA7517; color: #854F0B; }
-  .submit-btn {
-    margin-top: 14px; width: 100%; padding: 9px; border-radius: var(--radius-md);
-    border: 0.5px solid var(--border-mid); background: var(--bg-secondary);
-    color: var(--text-primary); font-size: 13px; font-weight: 500; cursor: pointer; transition: background 0.15s;
-  }
+  .submit-btn { margin-top: 14px; width: 100%; padding: 9px; border-radius: var(--radius-md); border: 0.5px solid var(--border-mid); background: var(--bg-secondary); color: var(--text-primary); font-size: 13px; font-weight: 500; cursor: pointer; transition: background 0.15s; }
   .submit-btn:hover { background: var(--bg-tertiary); }
-  .msg { font-size: 12px; color: #3B6D11; background: #EAF3DE; border-radius: var(--radius-md); padding: 6px 10px; margin-top: 8px; display: none; }
+  .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .msg { font-size: 12px; border-radius: var(--radius-md); padding: 6px 10px; margin-top: 8px; display: none; }
+  .msg.success { color: #3B6D11; background: #EAF3DE; }
+  .msg.error { color: #A32D2D; background: #FCEBEB; }
   .schedule-wrap { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 12px; background: var(--bg-primary); border-radius: var(--radius-lg); overflow: hidden; }
   th { background: var(--bg-secondary); padding: 8px 6px; text-align: center; font-weight: 500; font-size: 11px; border: 0.5px solid var(--border-light); color: var(--text-secondary); }
   td { border: 0.5px solid var(--border-light); padding: 4px; vertical-align: top; }
-  .time-label { background: var(--bg-secondary); text-align: center; font-size: 11px; color: var(--text-secondary); font-weight: 500; width: 68px; }
+  .time-label { background: var(--bg-secondary); text-align: center; font-size: 11px; color: var(--text-secondary); font-weight: 500; width: 72px; }
   .period-header { background: var(--bg-tertiary); text-align: center; font-size: 11px; font-weight: 500; color: var(--text-secondary); padding: 5px 4px; }
   .patient-chip { background: #E6F1FB; border: 0.5px solid #B5D4F4; border-radius: 5px; padding: 3px 5px; margin: 2px 0; display: block; }
   .patient-chip .p-name { font-weight: 500; color: #185FA5; font-size: 11px; }
@@ -78,11 +66,17 @@
   .subtotal-row td { background: #EAF3DE; font-size: 11px; font-weight: 500; color: #3B6D11; text-align: center; padding: 4px; border: 0.5px solid #C0DD97; }
   .total-row td { background: #E6F1FB; font-size: 12px; font-weight: 500; color: #185FA5; text-align: center; padding: 5px 4px; border: 0.5px solid #B5D4F4; }
   .empty-cell { color: var(--text-tertiary); text-align: center; font-size: 11px; padding: 8px 0; display: block; }
+  .loading-overlay { text-align: center; padding: 2rem; color: var(--text-secondary); font-size: 13px; }
 </style>
 </head>
 <body>
 <div class="container">
-  <h1>復健治療排程系統</h1>
+  <h1>
+    復健治療排程系統
+    <span class="sync-status connecting" id="sync-status">
+      <i class="ti ti-loader" style="font-size:13px;"></i> 連線中...
+    </span>
+  </h1>
 
   <div class="form-card">
     <p class="section-title">新增病患排程</p>
@@ -132,27 +126,56 @@
         <button class="day-btn uncertain" data-day="0">不確定</button>
       </div>
     </div>
-    <button class="submit-btn" onclick="addPatient()">＋ 加入排程</button>
+    <button class="submit-btn" id="submit-btn" onclick="addPatient()" disabled>＋ 加入排程</button>
     <div class="msg" id="msg"></div>
   </div>
 
   <p class="section-title">週間排程預覽</p>
-  <div class="schedule-wrap">
-    <table id="schedule-table"></table>
+  <div id="table-wrap" class="schedule-wrap">
+    <div class="loading-overlay"><i class="ti ti-loader"></i> 載入資料中...</div>
   </div>
 </div>
 
-<script>
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDoE3gLtmz49AAa7catGK4AoJNUyEXlxhM",
+  authDomain: "rehab-schedule-b844b.firebaseapp.com",
+  projectId: "rehab-schedule-b844b",
+  storageBucket: "rehab-schedule-b844b.firebasestorage.app",
+  messagingSenderId: "136536263185",
+  appId: "1:136536263185:web:b88fcdf403d49216977fb0"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const colRef = collection(db, 'patients');
+
 const AM_TIMES = ['08:00','09:00','10:00'];
 const PM_TIMES = ['13:00','14:00','15:00'];
+const DAY_KEYS = [1,2,3,4,5,0];
 const TIME_LABELS = {
   '08:00':'08:00–09:00','09:00':'09:00–10:00','10:00':'10:00–11:00',
   '13:00':'13:00–14:00','14:00':'14:00–15:00','15:00':'15:00–16:00'
 };
-const DAY_KEYS = [1,2,3,4,5,0];
 
+let patients = [];
 let selectedDays = new Set();
-let patients = JSON.parse(localStorage.getItem('rehab_patients') || '[]');
+
+function setStatus(state, text) {
+  const el = document.getElementById('sync-status');
+  el.className = 'sync-status ' + state;
+  const icons = { connected: 'ti-cloud-check', connecting: 'ti-loader', error: 'ti-cloud-off' };
+  el.innerHTML = `<i class="ti ${icons[state]}" style="font-size:13px;"></i> ${text}`;
+}
+
+function showMsg(txt, type='success') {
+  const m = document.getElementById('msg');
+  m.textContent = txt; m.className = 'msg ' + type; m.style.display = 'block';
+  setTimeout(() => m.style.display = 'none', 2500);
+}
 
 document.querySelectorAll('.day-btn').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -162,46 +185,47 @@ document.querySelectorAll('.day-btn').forEach(btn => {
   });
 });
 
-function showMsg(txt) {
-  const m = document.getElementById('msg');
-  m.textContent = txt; m.style.display = 'block';
-  setTimeout(() => m.style.display = 'none', 2000);
-}
-
-function saveData() { localStorage.setItem('rehab_patients', JSON.stringify(patients)); }
-
-function addPatient() {
+window.addPatient = async function() {
   const name = document.getElementById('f-name').value.trim();
   const pid = document.getElementById('f-id').value.trim();
   const pts = document.getElementById('f-pts').value;
   const time = document.getElementById('f-time').value;
   if (!name || !pid || !pts || !time || selectedDays.size === 0) {
-    showMsg('請填寫所有欄位並選擇至少一個星期'); return;
+    showMsg('請填寫所有欄位並選擇至少一個星期', 'error'); return;
   }
-  selectedDays.forEach(day => {
-    patients.push({ name, pid, pts: parseInt(pts), time, day: parseInt(day), id: Date.now() + Math.random() });
-  });
-  saveData(); renderTable();
-  document.getElementById('f-name').value = '';
-  document.getElementById('f-id').value = '';
-  document.getElementById('f-pts').value = '';
-  document.getElementById('f-time').value = '';
-  selectedDays.clear();
-  document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('selected'));
-  showMsg('排程已新增！');
-}
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  try {
+    for (const day of selectedDays) {
+      await addDoc(colRef, { name, pid, pts: parseInt(pts), time, day: parseInt(day), createdAt: Date.now() });
+    }
+    document.getElementById('f-name').value = '';
+    document.getElementById('f-id').value = '';
+    document.getElementById('f-pts').value = '';
+    document.getElementById('f-time').value = '';
+    selectedDays.clear();
+    document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('selected'));
+    showMsg('排程已新增並同步！');
+  } catch(e) {
+    showMsg('新增失敗：' + e.message, 'error');
+  }
+  btn.disabled = false;
+};
 
-function removePatient(id) {
-  patients = patients.filter(p => p.id !== id);
-  saveData(); renderTable();
-}
+window.removePatient = async function(docId) {
+  try {
+    await deleteDoc(doc(db, 'patients', docId));
+  } catch(e) {
+    showMsg('刪除失敗：' + e.message, 'error');
+  }
+};
 
 function cellContent(time, dayKey) {
   const pts = patients.filter(p => p.time === time && p.day === dayKey);
   if (!pts.length) return '<span class="empty-cell">–</span>';
   return pts.map(p =>
     `<span class="patient-chip${dayKey===0?' uncertain-chip':''}">
-      <button class="remove-btn" onclick="removePatient(${p.id})" title="移除">✕</button>
+      <button class="remove-btn" onclick="removePatient('${p.docId}')" title="移除">✕</button>
       <span class="p-name">${p.name}</span><br>
       <span class="p-id">${p.pid}</span>
       <span class="p-pts"> · ${p.pts}點</span>
@@ -210,8 +234,8 @@ function cellContent(time, dayKey) {
 }
 
 function renderTable() {
-  const tbl = document.getElementById('schedule-table');
-  let html = '<thead><tr><th style="width:68px;"></th>';
+  const wrap = document.getElementById('table-wrap');
+  let html = '<table><thead><tr><th style="width:72px;"></th>';
   ['週一','週二','週三','週四','週五'].forEach(d => html += `<th>${d}</th>`);
   html += '<th style="width:62px;">不確定</th></tr></thead><tbody>';
 
@@ -246,11 +270,23 @@ function renderTable() {
     const s = patients.filter(p=>p.day===d).reduce((a,p)=>a+p.pts,0);
     html += `<td>${s>0?'<strong>'+s+'點</strong>':'–'}</td>`;
   });
-  html += '</tr></tbody>';
-  tbl.innerHTML = html;
+  html += '</tr></tbody></table>';
+  wrap.innerHTML = html;
 }
 
-renderTable();
+const q = query(colRef, orderBy('createdAt'));
+onSnapshot(q,
+  (snapshot) => {
+    patients = snapshot.docs.map(d => ({ docId: d.id, ...d.data() }));
+    setStatus('connected', '即時同步中');
+    document.getElementById('submit-btn').disabled = false;
+    renderTable();
+  },
+  (err) => {
+    setStatus('error', '連線失敗');
+    console.error(err);
+  }
+);
 </script>
 </body>
 </html>
