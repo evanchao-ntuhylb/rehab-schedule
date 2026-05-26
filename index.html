@@ -20,13 +20,54 @@
       --border-light: rgba(255,255,255,0.1); --border-mid: rgba(255,255,255,0.2);
     }
   }
-  body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg-tertiary); color: var(--text-primary); min-height: 100vh; padding: 1.5rem 1rem; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg-tertiary); color: var(--text-primary); min-height: 100vh; }
+
+  /* ── 登入畫面 ── */
+  #login-screen {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; padding: 1rem;
+  }
+  .login-card {
+    background: var(--bg-primary); border: 0.5px solid var(--border-light);
+    border-radius: var(--radius-lg); padding: 2rem 2rem 1.75rem; width: 100%; max-width: 360px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+  }
+  .login-card h2 { font-size: 17px; font-weight: 500; margin-bottom: 4px; }
+  .login-card p { font-size: 12px; color: var(--text-secondary); margin-bottom: 1.5rem; }
+  .login-field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+  .login-field label { font-size: 12px; color: var(--text-secondary); }
+  .login-field input {
+    font-size: 13px; height: 38px; padding: 0 12px;
+    border-radius: var(--radius-md); border: 0.5px solid var(--border-mid);
+    background: var(--bg-primary); color: var(--text-primary);
+  }
+  .login-field input:focus { outline: none; border-color: #378ADD; box-shadow: 0 0 0 2px rgba(55,138,221,0.15); }
+  .login-btn {
+    margin-top: 8px; width: 100%; padding: 10px; border-radius: var(--radius-md);
+    border: none; background: #378ADD; color: #fff;
+    font-size: 13px; font-weight: 500; cursor: pointer; transition: background 0.15s;
+  }
+  .login-btn:hover { background: #2a6fba; }
+  .login-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+  .login-err { font-size: 12px; color: #A32D2D; background: #FCEBEB; border-radius: var(--radius-md); padding: 6px 10px; margin-top: 10px; display: none; }
+
+  /* ── 主畫面 ── */
+  #main-screen { display: none; padding: 1.5rem 1rem; }
   .container { max-width: 960px; margin: 0 auto; }
-  h1 { font-size: 20px; font-weight: 500; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 10px; }
+  h1 { font-size: 20px; font-weight: 500; display: flex; align-items: center; gap: 10px; }
   .sync-status { font-size: 12px; font-weight: 400; padding: 3px 10px; border-radius: 20px; display: inline-flex; align-items: center; gap: 5px; }
   .sync-status.connected { background: #EAF3DE; color: #3B6D11; }
   .sync-status.connecting { background: #FAEEDA; color: #854F0B; }
   .sync-status.error { background: #FCEBEB; color: #A32D2D; }
+  .user-bar { display: flex; align-items: center; gap: 10px; }
+  .user-email { font-size: 12px; color: var(--text-secondary); }
+  .logout-btn {
+    font-size: 12px; padding: 5px 12px; border-radius: var(--radius-md);
+    border: 0.5px solid var(--border-mid); background: var(--bg-secondary);
+    color: var(--text-secondary); cursor: pointer; transition: background 0.15s;
+  }
+  .logout-btn:hover { background: var(--bg-tertiary); }
   .form-card { background: var(--bg-primary); border: 0.5px solid var(--border-light); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 1.5rem; }
   .section-title { font-size: 11px; font-weight: 500; color: var(--text-secondary); letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 12px; }
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
@@ -70,75 +111,104 @@
 </style>
 </head>
 <body>
-<div class="container">
-  <h1>
-    復健治療排程系統
-    <span class="sync-status connecting" id="sync-status">
-      <i class="ti ti-loader" style="font-size:13px;"></i> 連線中...
-    </span>
-  </h1>
 
-  <div class="form-card">
-    <p class="section-title">新增病患排程</p>
-    <div class="form-grid">
-      <div class="form-field">
-        <label>患者姓名</label>
-        <input type="text" id="f-name" placeholder="例：王小明" />
-      </div>
-      <div class="form-field">
-        <label>病歷號碼</label>
-        <input type="text" id="f-id" placeholder="例：A123456" />
-      </div>
-      <div class="form-field">
-        <label>健保點值</label>
-        <select id="f-pts">
-          <option value="">請選擇</option>
-          <option value="320">320 點</option>
-          <option value="480">480 點</option>
-          <option value="600">600 點</option>
-        </select>
-      </div>
-      <div class="form-field">
-        <label>安排時段</label>
-        <select id="f-time">
-          <option value="">請選擇</option>
-          <optgroup label="上午">
-            <option value="08:00">08:00 – 09:00</option>
-            <option value="09:00">09:00 – 10:00</option>
-            <option value="10:00">10:00 – 11:00</option>
-          </optgroup>
-          <optgroup label="下午">
-            <option value="13:00">13:00 – 14:00</option>
-            <option value="14:00">14:00 – 15:00</option>
-            <option value="15:00">15:00 – 16:00</option>
-          </optgroup>
-        </select>
-      </div>
+<!-- 登入畫面 -->
+<div id="login-screen">
+  <div class="login-card">
+    <h2>復健治療排程系統</h2>
+    <p>請登入以繼續使用</p>
+    <div class="login-field">
+      <label>電子郵件</label>
+      <input type="email" id="l-email" placeholder="your@email.com" />
     </div>
-    <div class="form-field">
-      <label>安排星期（可複選）</label>
-      <div class="day-row" id="day-row">
-        <button class="day-btn" data-day="1">週一</button>
-        <button class="day-btn" data-day="2">週二</button>
-        <button class="day-btn" data-day="3">週三</button>
-        <button class="day-btn" data-day="4">週四</button>
-        <button class="day-btn" data-day="5">週五</button>
-        <button class="day-btn uncertain" data-day="0">不確定</button>
-      </div>
+    <div class="login-field">
+      <label>密碼</label>
+      <input type="password" id="l-pass" placeholder="••••••••" />
     </div>
-    <button class="submit-btn" id="submit-btn" onclick="addPatient()" disabled>＋ 加入排程</button>
-    <div class="msg" id="msg"></div>
+    <button class="login-btn" id="login-btn" onclick="doLogin()">登入</button>
+    <div class="login-err" id="login-err"></div>
   </div>
+</div>
 
-  <p class="section-title">週間排程預覽</p>
-  <div id="table-wrap" class="schedule-wrap">
-    <div class="loading-overlay"><i class="ti ti-loader"></i> 載入資料中...</div>
+<!-- 主畫面 -->
+<div id="main-screen">
+  <div class="container">
+    <div class="topbar">
+      <h1>
+        復健治療排程系統
+        <span class="sync-status connecting" id="sync-status">
+          <i class="ti ti-loader" style="font-size:13px;"></i> 連線中...
+        </span>
+      </h1>
+      <div class="user-bar">
+        <span class="user-email" id="user-email"></span>
+        <button class="logout-btn" onclick="doLogout()">登出</button>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <p class="section-title">新增病患排程</p>
+      <div class="form-grid">
+        <div class="form-field">
+          <label>患者姓名</label>
+          <input type="text" id="f-name" placeholder="例：王小明" />
+        </div>
+        <div class="form-field">
+          <label>病歷號碼</label>
+          <input type="text" id="f-id" placeholder="例：A123456" />
+        </div>
+        <div class="form-field">
+          <label>健保點值</label>
+          <select id="f-pts">
+            <option value="">請選擇</option>
+            <option value="320">320 點</option>
+            <option value="480">480 點</option>
+            <option value="600">600 點</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>安排時段</label>
+          <select id="f-time">
+            <option value="">請選擇</option>
+            <optgroup label="上午">
+              <option value="08:00">08:00 – 09:00</option>
+              <option value="09:00">09:00 – 10:00</option>
+              <option value="10:00">10:00 – 11:00</option>
+            </optgroup>
+            <optgroup label="下午">
+              <option value="13:00">13:00 – 14:00</option>
+              <option value="14:00">14:00 – 15:00</option>
+              <option value="15:00">15:00 – 16:00</option>
+            </optgroup>
+          </select>
+        </div>
+      </div>
+      <div class="form-field">
+        <label>安排星期（可複選）</label>
+        <div class="day-row" id="day-row">
+          <button class="day-btn" data-day="1">週一</button>
+          <button class="day-btn" data-day="2">週二</button>
+          <button class="day-btn" data-day="3">週三</button>
+          <button class="day-btn" data-day="4">週四</button>
+          <button class="day-btn" data-day="5">週五</button>
+          <button class="day-btn uncertain" data-day="0">不確定</button>
+        </div>
+      </div>
+      <button class="submit-btn" id="submit-btn" onclick="addPatient()" disabled>＋ 加入排程</button>
+      <div class="msg" id="msg"></div>
+    </div>
+
+    <p class="section-title">週間排程預覽</p>
+    <div id="table-wrap" class="schedule-wrap">
+      <div class="loading-overlay"><i class="ti ti-loader"></i> 載入資料中...</div>
+    </div>
   </div>
 </div>
 
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
 import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDoE3gLtmz49AAa7catGK4AoJNUyEXlxhM",
@@ -151,6 +221,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
 const colRef = collection(db, 'patients');
 
 const AM_TIMES = ['08:00','09:00','10:00'];
@@ -163,6 +234,72 @@ const TIME_LABELS = {
 
 let patients = [];
 let selectedDays = new Set();
+let unsubscribe = null;
+
+// ── 登入/登出 ──
+window.doLogin = async function() {
+  const email = document.getElementById('l-email').value.trim();
+  const pass = document.getElementById('l-pass').value;
+  const btn = document.getElementById('login-btn');
+  const err = document.getElementById('login-err');
+  err.style.display = 'none';
+  btn.disabled = true; btn.textContent = '登入中...';
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+  } catch(e) {
+    const msgs = {
+      'auth/invalid-email': '電子郵件格式不正確',
+      'auth/user-not-found': '此帳號不存在',
+      'auth/wrong-password': '密碼錯誤',
+      'auth/invalid-credential': '帳號或密碼錯誤',
+      'auth/too-many-requests': '嘗試次數過多，請稍後再試'
+    };
+    err.textContent = msgs[e.code] || '登入失敗：' + e.message;
+    err.style.display = 'block';
+  }
+  btn.disabled = false; btn.textContent = '登入';
+};
+
+window.doLogout = async function() {
+  if (unsubscribe) unsubscribe();
+  await signOut(auth);
+};
+
+// Enter 鍵觸發登入
+document.getElementById('l-pass').addEventListener('keydown', e => {
+  if (e.key === 'Enter') window.doLogin();
+});
+
+// ── 監聽登入狀態 ──
+onAuthStateChanged(auth, user => {
+  if (user) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('main-screen').style.display = 'block';
+    document.getElementById('user-email').textContent = user.email;
+    startListening();
+  } else {
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('main-screen').style.display = 'none';
+    document.getElementById('table-wrap').innerHTML = '<div class="loading-overlay">載入資料中...</div>';
+  }
+});
+
+function startListening() {
+  if (unsubscribe) unsubscribe();
+  const q = query(colRef, orderBy('createdAt'));
+  unsubscribe = onSnapshot(q,
+    snapshot => {
+      patients = snapshot.docs.map(d => ({ docId: d.id, ...d.data() }));
+      setStatus('connected', '即時同步中');
+      document.getElementById('submit-btn').disabled = false;
+      renderTable();
+    },
+    err => {
+      setStatus('error', '連線失敗');
+      console.error(err);
+    }
+  );
+}
 
 function setStatus(state, text) {
   const el = document.getElementById('sync-status');
@@ -273,20 +410,6 @@ function renderTable() {
   html += '</tr></tbody></table>';
   wrap.innerHTML = html;
 }
-
-const q = query(colRef, orderBy('createdAt'));
-onSnapshot(q,
-  (snapshot) => {
-    patients = snapshot.docs.map(d => ({ docId: d.id, ...d.data() }));
-    setStatus('connected', '即時同步中');
-    document.getElementById('submit-btn').disabled = false;
-    renderTable();
-  },
-  (err) => {
-    setStatus('error', '連線失敗');
-    console.error(err);
-  }
-);
 </script>
 </body>
 </html>
