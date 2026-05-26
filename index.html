@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>復健治療排程系統</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f5f3;
+    --bg-tertiary: #eeede9;
+    --text-primary: #1a1a18;
+    --text-secondary: #6b6b67;
+    --text-tertiary: #9b9b97;
+    --border-light: rgba(0,0,0,0.12);
+    --border-mid: rgba(0,0,0,0.22);
+    --radius-md: 8px;
+    --radius-lg: 12px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-primary: #1e1e1c;
+      --bg-secondary: #2a2a28;
+      --bg-tertiary: #333330;
+      --text-primary: #f0ede8;
+      --text-secondary: #a0a09a;
+      --text-tertiary: #6b6b65;
+      --border-light: rgba(255,255,255,0.1);
+      --border-mid: rgba(255,255,255,0.2);
+    }
+  }
+  body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg-tertiary); color: var(--text-primary); min-height: 100vh; padding: 1.5rem 1rem; }
+  .container { max-width: 900px; margin: 0 auto; }
+  h1 { font-size: 20px; font-weight: 500; margin-bottom: 1.5rem; }
+  .form-card { background: var(--bg-primary); border: 0.5px solid var(--border-light); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 1.5rem; }
+  .section-title { font-size: 11px; font-weight: 500; color: var(--text-secondary); letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 12px; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  @media (max-width: 480px) { .form-grid { grid-template-columns: 1fr; } }
+  .form-field { display: flex; flex-direction: column; gap: 5px; }
+  .form-field label { font-size: 12px; color: var(--text-secondary); }
+  .form-field input, .form-field select {
+    font-size: 13px; height: 36px; padding: 0 10px;
+    border-radius: var(--radius-md); border: 0.5px solid var(--border-mid);
+    background: var(--bg-primary); color: var(--text-primary);
+  }
+  .form-field input:focus, .form-field select:focus { outline: none; border-color: #378ADD; box-shadow: 0 0 0 2px rgba(55,138,221,0.15); }
+  .day-row { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 4px; }
+  .day-btn {
+    padding: 5px 13px; border-radius: var(--radius-md);
+    border: 0.5px solid var(--border-mid); background: var(--bg-primary);
+    color: var(--text-secondary); font-size: 12px; cursor: pointer; transition: all 0.15s;
+  }
+  .day-btn.selected { background: #E6F1FB; border-color: #378ADD; color: #185FA5; font-weight: 500; }
+  .day-btn.uncertain.selected { background: #FAEEDA; border-color: #BA7517; color: #854F0B; }
+  .submit-btn {
+    margin-top: 14px; width: 100%; padding: 9px; border-radius: var(--radius-md);
+    border: 0.5px solid var(--border-mid); background: var(--bg-secondary);
+    color: var(--text-primary); font-size: 13px; font-weight: 500; cursor: pointer; transition: background 0.15s;
+  }
+  .submit-btn:hover { background: var(--bg-tertiary); }
+  .msg { font-size: 12px; color: #3B6D11; background: #EAF3DE; border-radius: var(--radius-md); padding: 6px 10px; margin-top: 8px; display: none; }
+  .schedule-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 12px; background: var(--bg-primary); border-radius: var(--radius-lg); overflow: hidden; }
+  th { background: var(--bg-secondary); padding: 8px 6px; text-align: center; font-weight: 500; font-size: 11px; border: 0.5px solid var(--border-light); color: var(--text-secondary); }
+  td { border: 0.5px solid var(--border-light); padding: 4px; vertical-align: top; }
+  .time-label { background: var(--bg-secondary); text-align: center; font-size: 11px; color: var(--text-secondary); font-weight: 500; width: 68px; }
+  .period-header { background: var(--bg-tertiary); text-align: center; font-size: 11px; font-weight: 500; color: var(--text-secondary); padding: 5px 4px; }
+  .patient-chip { background: #E6F1FB; border: 0.5px solid #B5D4F4; border-radius: 5px; padding: 3px 5px; margin: 2px 0; display: block; }
+  .patient-chip .p-name { font-weight: 500; color: #185FA5; font-size: 11px; }
+  .patient-chip .p-id { color: #185FA5; font-size: 10px; opacity: 0.8; }
+  .patient-chip .p-pts { font-size: 10px; color: #378ADD; }
+  .patient-chip .remove-btn { float: right; cursor: pointer; color: #378ADD; font-size: 11px; background: none; border: none; padding: 0; margin-left: 4px; opacity: 0.6; }
+  .patient-chip .remove-btn:hover { opacity: 1; }
+  .uncertain-chip { background: #FAEEDA !important; border-color: #FAC775 !important; }
+  .uncertain-chip .p-name, .uncertain-chip .p-id, .uncertain-chip .p-pts, .uncertain-chip .remove-btn { color: #854F0B !important; }
+  .subtotal-row td { background: #EAF3DE; font-size: 11px; font-weight: 500; color: #3B6D11; text-align: center; padding: 4px; border: 0.5px solid #C0DD97; }
+  .total-row td { background: #E6F1FB; font-size: 12px; font-weight: 500; color: #185FA5; text-align: center; padding: 5px 4px; border: 0.5px solid #B5D4F4; }
+  .empty-cell { color: var(--text-tertiary); text-align: center; font-size: 11px; padding: 8px 0; display: block; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>復健治療排程系統</h1>
+
+  <div class="form-card">
+    <p class="section-title">新增病患排程</p>
+    <div class="form-grid">
+      <div class="form-field">
+        <label>患者姓名</label>
+        <input type="text" id="f-name" placeholder="例：王小明" />
+      </div>
+      <div class="form-field">
+        <label>病歷號碼</label>
+        <input type="text" id="f-id" placeholder="例：A123456" />
+      </div>
+      <div class="form-field">
+        <label>健保點值</label>
+        <select id="f-pts">
+          <option value="">請選擇</option>
+          <option value="320">320 點</option>
+          <option value="480">480 點</option>
+          <option value="600">600 點</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label>安排時段</label>
+        <select id="f-time">
+          <option value="">請選擇</option>
+          <optgroup label="上午">
+            <option value="08:00">08:00 – 09:00</option>
+            <option value="09:00">09:00 – 10:00</option>
+            <option value="10:00">10:00 – 11:00</option>
+          </optgroup>
+          <optgroup label="下午">
+            <option value="13:00">13:00 – 14:00</option>
+            <option value="14:00">14:00 – 15:00</option>
+            <option value="15:00">15:00 – 16:00</option>
+          </optgroup>
+        </select>
+      </div>
+    </div>
+    <div class="form-field">
+      <label>安排星期（可複選）</label>
+      <div class="day-row" id="day-row">
+        <button class="day-btn" data-day="1">週一</button>
+        <button class="day-btn" data-day="2">週二</button>
+        <button class="day-btn" data-day="3">週三</button>
+        <button class="day-btn" data-day="4">週四</button>
+        <button class="day-btn" data-day="5">週五</button>
+        <button class="day-btn uncertain" data-day="0">不確定</button>
+      </div>
+    </div>
+    <button class="submit-btn" onclick="addPatient()">＋ 加入排程</button>
+    <div class="msg" id="msg"></div>
+  </div>
+
+  <p class="section-title">週間排程預覽</p>
+  <div class="schedule-wrap">
+    <table id="schedule-table"></table>
+  </div>
+</div>
+
+<script>
+const AM_TIMES = ['08:00','09:00','10:00'];
+const PM_TIMES = ['13:00','14:00','15:00'];
+const TIME_LABELS = {
+  '08:00':'08:00–09:00','09:00':'09:00–10:00','10:00':'10:00–11:00',
+  '13:00':'13:00–14:00','14:00':'14:00–15:00','15:00':'15:00–16:00'
+};
+const DAY_KEYS = [1,2,3,4,5,0];
+
+let selectedDays = new Set();
+let patients = JSON.parse(localStorage.getItem('rehab_patients') || '[]');
+
+document.querySelectorAll('.day-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const d = btn.dataset.day;
+    if (selectedDays.has(d)) { selectedDays.delete(d); btn.classList.remove('selected'); }
+    else { selectedDays.add(d); btn.classList.add('selected'); }
+  });
+});
+
+function showMsg(txt) {
+  const m = document.getElementById('msg');
+  m.textContent = txt; m.style.display = 'block';
+  setTimeout(() => m.style.display = 'none', 2000);
+}
+
+function saveData() { localStorage.setItem('rehab_patients', JSON.stringify(patients)); }
+
+function addPatient() {
+  const name = document.getElementById('f-name').value.trim();
+  const pid = document.getElementById('f-id').value.trim();
+  const pts = document.getElementById('f-pts').value;
+  const time = document.getElementById('f-time').value;
+  if (!name || !pid || !pts || !time || selectedDays.size === 0) {
+    showMsg('請填寫所有欄位並選擇至少一個星期'); return;
+  }
+  selectedDays.forEach(day => {
+    patients.push({ name, pid, pts: parseInt(pts), time, day: parseInt(day), id: Date.now() + Math.random() });
+  });
+  saveData(); renderTable();
+  document.getElementById('f-name').value = '';
+  document.getElementById('f-id').value = '';
+  document.getElementById('f-pts').value = '';
+  document.getElementById('f-time').value = '';
+  selectedDays.clear();
+  document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('selected'));
+  showMsg('排程已新增！');
+}
+
+function removePatient(id) {
+  patients = patients.filter(p => p.id !== id);
+  saveData(); renderTable();
+}
+
+function cellContent(time, dayKey) {
+  const pts = patients.filter(p => p.time === time && p.day === dayKey);
+  if (!pts.length) return '<span class="empty-cell">–</span>';
+  return pts.map(p =>
+    `<span class="patient-chip${dayKey===0?' uncertain-chip':''}">
+      <button class="remove-btn" onclick="removePatient(${p.id})" title="移除">✕</button>
+      <span class="p-name">${p.name}</span><br>
+      <span class="p-id">${p.pid}</span>
+      <span class="p-pts"> · ${p.pts}點</span>
+    </span>`
+  ).join('');
+}
+
+function renderTable() {
+  const tbl = document.getElementById('schedule-table');
+  let html = '<thead><tr><th style="width:68px;"></th>';
+  ['週一','週二','週三','週四','週五'].forEach(d => html += `<th>${d}</th>`);
+  html += '<th style="width:62px;">不確定</th></tr></thead><tbody>';
+
+  html += '<tr><td class="time-label period-header"></td><td class="period-header" colspan="5">上午</td><td class="period-header">上午</td></tr>';
+  AM_TIMES.forEach(t => {
+    html += `<tr><td class="time-label">${TIME_LABELS[t]}</td>`;
+    DAY_KEYS.forEach(d => html += `<td>${cellContent(t, d)}</td>`);
+    html += '</tr>';
+  });
+  html += '<tr class="subtotal-row"><td class="time-label" style="background:#EAF3DE;color:#3B6D11;">上午小計</td>';
+  DAY_KEYS.forEach(d => {
+    const s = patients.filter(p => AM_TIMES.includes(p.time) && p.day===d).reduce((a,p)=>a+p.pts,0);
+    html += `<td>${s>0?s+'點':'–'}</td>`;
+  });
+  html += '</tr>';
+
+  html += '<tr><td class="time-label period-header"></td><td class="period-header" colspan="5">下午</td><td class="period-header">下午</td></tr>';
+  PM_TIMES.forEach(t => {
+    html += `<tr><td class="time-label">${TIME_LABELS[t]}</td>`;
+    DAY_KEYS.forEach(d => html += `<td>${cellContent(t, d)}</td>`);
+    html += '</tr>';
+  });
+  html += '<tr class="subtotal-row"><td class="time-label" style="background:#EAF3DE;color:#3B6D11;">下午小計</td>';
+  DAY_KEYS.forEach(d => {
+    const s = patients.filter(p => PM_TIMES.includes(p.time) && p.day===d).reduce((a,p)=>a+p.pts,0);
+    html += `<td>${s>0?s+'點':'–'}</td>`;
+  });
+  html += '</tr>';
+
+  html += '<tr class="total-row"><td class="time-label" style="background:#E6F1FB;color:#185FA5;">當日總計</td>';
+  DAY_KEYS.forEach(d => {
+    const s = patients.filter(p=>p.day===d).reduce((a,p)=>a+p.pts,0);
+    html += `<td>${s>0?'<strong>'+s+'點</strong>':'–'}</td>`;
+  });
+  html += '</tr></tbody>';
+  tbl.innerHTML = html;
+}
+
+renderTable();
+</script>
+</body>
+</html>
