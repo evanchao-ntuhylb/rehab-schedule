@@ -23,37 +23,22 @@
   body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg-tertiary); color: var(--text-primary); min-height: 100vh; }
 
   /* ── 登入畫面 ── */
-  #login-screen {
-    display: flex; align-items: center; justify-content: center;
-    min-height: 100vh; padding: 1rem;
-  }
-  .login-card {
-    background: var(--bg-primary); border: 0.5px solid var(--border-light);
-    border-radius: var(--radius-lg); padding: 2rem 2rem 1.75rem; width: 100%; max-width: 360px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.07);
-  }
+  #login-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 1rem; }
+  .login-card { background: var(--bg-primary); border: 0.5px solid var(--border-light); border-radius: var(--radius-lg); padding: 2rem; width: 100%; max-width: 360px; box-shadow: 0 4px 24px rgba(0,0,0,0.07); }
   .login-card h2 { font-size: 17px; font-weight: 500; margin-bottom: 4px; }
   .login-card p { font-size: 12px; color: var(--text-secondary); margin-bottom: 1.5rem; }
   .login-field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
   .login-field label { font-size: 12px; color: var(--text-secondary); }
-  .login-field input {
-    font-size: 13px; height: 38px; padding: 0 12px;
-    border-radius: var(--radius-md); border: 0.5px solid var(--border-mid);
-    background: var(--bg-primary); color: var(--text-primary);
-  }
+  .login-field input { font-size: 13px; height: 38px; padding: 0 12px; border-radius: var(--radius-md); border: 0.5px solid var(--border-mid); background: var(--bg-primary); color: var(--text-primary); }
   .login-field input:focus { outline: none; border-color: #378ADD; box-shadow: 0 0 0 2px rgba(55,138,221,0.15); }
-  .login-btn {
-    margin-top: 8px; width: 100%; padding: 10px; border-radius: var(--radius-md);
-    border: none; background: #378ADD; color: #fff;
-    font-size: 13px; font-weight: 500; cursor: pointer; transition: background 0.15s;
-  }
+  .login-btn { margin-top: 8px; width: 100%; padding: 10px; border-radius: var(--radius-md); border: none; background: #378ADD; color: #fff; font-size: 13px; font-weight: 500; cursor: pointer; transition: background 0.15s; }
   .login-btn:hover { background: #2a6fba; }
   .login-btn:disabled { opacity: 0.6; cursor: not-allowed; }
   .login-err { font-size: 12px; color: #A32D2D; background: #FCEBEB; border-radius: var(--radius-md); padding: 6px 10px; margin-top: 10px; display: none; }
 
   /* ── 主畫面 ── */
   #main-screen { display: none; padding: 1.5rem 1rem; }
-  .container { max-width: 960px; margin: 0 auto; }
+  .container { max-width: 980px; margin: 0 auto; }
   .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 10px; }
   h1 { font-size: 20px; font-weight: 500; display: flex; align-items: center; gap: 10px; }
   .sync-status { font-size: 12px; font-weight: 400; padding: 3px 10px; border-radius: 20px; display: inline-flex; align-items: center; gap: 5px; }
@@ -62,11 +47,7 @@
   .sync-status.error { background: #FCEBEB; color: #A32D2D; }
   .user-bar { display: flex; align-items: center; gap: 10px; }
   .user-email { font-size: 12px; color: var(--text-secondary); }
-  .logout-btn {
-    font-size: 12px; padding: 5px 12px; border-radius: var(--radius-md);
-    border: 0.5px solid var(--border-mid); background: var(--bg-secondary);
-    color: var(--text-secondary); cursor: pointer; transition: background 0.15s;
-  }
+  .logout-btn { font-size: 12px; padding: 5px 12px; border-radius: var(--radius-md); border: 0.5px solid var(--border-mid); background: var(--bg-secondary); color: var(--text-secondary); cursor: pointer; }
   .logout-btn:hover { background: var(--bg-tertiary); }
   .form-card { background: var(--bg-primary); border: 0.5px solid var(--border-light); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 1.5rem; }
   .section-title { font-size: 11px; font-weight: 500; color: var(--text-secondary); letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 12px; }
@@ -74,11 +55,7 @@
   @media (max-width: 500px) { .form-grid { grid-template-columns: 1fr; } }
   .form-field { display: flex; flex-direction: column; gap: 5px; }
   .form-field label { font-size: 12px; color: var(--text-secondary); }
-  .form-field input, .form-field select {
-    font-size: 13px; height: 36px; padding: 0 10px;
-    border-radius: var(--radius-md); border: 0.5px solid var(--border-mid);
-    background: var(--bg-primary); color: var(--text-primary);
-  }
+  .form-field input, .form-field select { font-size: 13px; height: 36px; padding: 0 10px; border-radius: var(--radius-md); border: 0.5px solid var(--border-mid); background: var(--bg-primary); color: var(--text-primary); }
   .form-field input:focus, .form-field select:focus { outline: none; border-color: #378ADD; box-shadow: 0 0 0 2px rgba(55,138,221,0.15); }
   .day-row { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 4px; }
   .day-btn { padding: 5px 13px; border-radius: var(--radius-md); border: 0.5px solid var(--border-mid); background: var(--bg-primary); color: var(--text-secondary); font-size: 12px; cursor: pointer; transition: all 0.15s; }
@@ -90,24 +67,64 @@
   .msg { font-size: 12px; border-radius: var(--radius-md); padding: 6px 10px; margin-top: 8px; display: none; }
   .msg.success { color: #3B6D11; background: #EAF3DE; }
   .msg.error { color: #A32D2D; background: #FCEBEB; }
+
+  /* ── 排程表格 ── */
   .schedule-wrap { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 12px; background: var(--bg-primary); border-radius: var(--radius-lg); overflow: hidden; }
   th { background: var(--bg-secondary); padding: 8px 6px; text-align: center; font-weight: 500; font-size: 11px; border: 0.5px solid var(--border-light); color: var(--text-secondary); }
   td { border: 0.5px solid var(--border-light); padding: 4px; vertical-align: top; }
   .time-label { background: var(--bg-secondary); text-align: center; font-size: 11px; color: var(--text-secondary); font-weight: 500; width: 72px; }
   .period-header { background: var(--bg-tertiary); text-align: center; font-size: 11px; font-weight: 500; color: var(--text-secondary); padding: 5px 4px; }
-  .patient-chip { background: #E6F1FB; border: 0.5px solid #B5D4F4; border-radius: 5px; padding: 3px 5px; margin: 2px 0; display: block; }
+  .patient-chip { background: #E6F1FB; border: 0.5px solid #B5D4F4; border-radius: 5px; padding: 4px 6px; margin: 2px 0; display: block; cursor: pointer; transition: box-shadow 0.15s, transform 0.1s; }
+  .patient-chip:hover { box-shadow: 0 2px 8px rgba(55,138,221,0.18); transform: translateY(-1px); }
   .patient-chip .p-name { font-weight: 500; color: #185FA5; font-size: 11px; }
   .patient-chip .p-id { color: #185FA5; font-size: 10px; opacity: 0.8; }
   .patient-chip .p-pts { font-size: 10px; color: #378ADD; }
-  .patient-chip .remove-btn { float: right; cursor: pointer; color: #378ADD; font-size: 11px; background: none; border: none; padding: 0; margin-left: 4px; opacity: 0.6; }
-  .patient-chip .remove-btn:hover { opacity: 1; }
   .uncertain-chip { background: #FAEEDA !important; border-color: #FAC775 !important; }
-  .uncertain-chip .p-name, .uncertain-chip .p-id, .uncertain-chip .p-pts, .uncertain-chip .remove-btn { color: #854F0B !important; }
+  .uncertain-chip .p-name, .uncertain-chip .p-id, .uncertain-chip .p-pts { color: #854F0B !important; }
   .subtotal-row td { background: #EAF3DE; font-size: 11px; font-weight: 500; color: #3B6D11; text-align: center; padding: 4px; border: 0.5px solid #C0DD97; }
   .total-row td { background: #E6F1FB; font-size: 12px; font-weight: 500; color: #185FA5; text-align: center; padding: 5px 4px; border: 0.5px solid #B5D4F4; }
   .empty-cell { color: var(--text-tertiary); text-align: center; font-size: 11px; padding: 8px 0; display: block; }
   .loading-overlay { text-align: center; padding: 2rem; color: var(--text-secondary); font-size: 13px; }
+
+  /* ── 編輯 Modal ── */
+  .modal-backdrop {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.35);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 100; padding: 1rem; opacity: 0; pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  .modal-backdrop.open { opacity: 1; pointer-events: all; }
+  .modal {
+    background: var(--bg-primary); border-radius: var(--radius-lg);
+    border: 0.5px solid var(--border-light);
+    width: 100%; max-width: 420px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+    transform: translateY(12px); transition: transform 0.2s;
+    overflow: hidden;
+  }
+  .modal-backdrop.open .modal { transform: translateY(0); }
+  .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem 0.75rem; border-bottom: 0.5px solid var(--border-light); }
+  .modal-header h3 { font-size: 15px; font-weight: 500; }
+  .modal-close { background: none; border: none; font-size: 18px; color: var(--text-secondary); cursor: pointer; line-height: 1; padding: 2px 6px; border-radius: 6px; }
+  .modal-close:hover { background: var(--bg-secondary); }
+  .modal-body { padding: 1.25rem; display: flex; flex-direction: column; gap: 12px; }
+  .modal-field { display: flex; flex-direction: column; gap: 5px; }
+  .modal-field label { font-size: 12px; color: var(--text-secondary); }
+  .modal-field input, .modal-field select { font-size: 13px; height: 36px; padding: 0 10px; border-radius: var(--radius-md); border: 0.5px solid var(--border-mid); background: var(--bg-primary); color: var(--text-primary); }
+  .modal-field input:focus, .modal-field select:focus { outline: none; border-color: #378ADD; box-shadow: 0 0 0 2px rgba(55,138,221,0.15); }
+  .modal-day-row { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 4px; }
+  .modal-day-btn { padding: 5px 12px; border-radius: var(--radius-md); border: 0.5px solid var(--border-mid); background: var(--bg-primary); color: var(--text-secondary); font-size: 12px; cursor: pointer; transition: all 0.15s; }
+  .modal-day-btn.selected { background: #E6F1FB; border-color: #378ADD; color: #185FA5; font-weight: 500; }
+  .modal-day-btn.uncertain.selected { background: #FAEEDA; border-color: #BA7517; color: #854F0B; }
+  .modal-footer { display: flex; gap: 8px; padding: 0 1.25rem 1.25rem; }
+  .btn-save { flex: 1; padding: 9px; border-radius: var(--radius-md); border: none; background: #378ADD; color: #fff; font-size: 13px; font-weight: 500; cursor: pointer; transition: background 0.15s; }
+  .btn-save:hover { background: #2a6fba; }
+  .btn-save:disabled { opacity: 0.6; cursor: not-allowed; }
+  .btn-delete { padding: 9px 16px; border-radius: var(--radius-md); border: 0.5px solid #e5c0c0; background: #FCEBEB; color: #A32D2D; font-size: 13px; font-weight: 500; cursor: pointer; transition: background 0.15s; }
+  .btn-delete:hover { background: #f5d5d5; }
+  .modal-msg { font-size: 12px; border-radius: var(--radius-md); padding: 6px 10px; margin: 0 1.25rem 0.75rem; display: none; }
+  .modal-msg.error { color: #A32D2D; background: #FCEBEB; }
 </style>
 </head>
 <body>
@@ -198,16 +215,75 @@
       <div class="msg" id="msg"></div>
     </div>
 
-    <p class="section-title">週間排程預覽</p>
+    <p class="section-title">週間排程預覽 <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-tertiary);">（點選個案可編輯）</span></p>
     <div id="table-wrap" class="schedule-wrap">
-      <div class="loading-overlay"><i class="ti ti-loader"></i> 載入資料中...</div>
+      <div class="loading-overlay">載入資料中...</div>
+    </div>
+  </div>
+</div>
+
+<!-- 編輯 Modal -->
+<div class="modal-backdrop" id="modal-backdrop" onclick="handleBackdropClick(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>編輯個案資料</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-field">
+        <label>患者姓名</label>
+        <input type="text" id="m-name" />
+      </div>
+      <div class="modal-field">
+        <label>病歷號碼</label>
+        <input type="text" id="m-id" />
+      </div>
+      <div class="modal-field">
+        <label>健保點值</label>
+        <select id="m-pts">
+          <option value="320">320 點</option>
+          <option value="480">480 點</option>
+          <option value="600">600 點</option>
+        </select>
+      </div>
+      <div class="modal-field">
+        <label>安排時段</label>
+        <select id="m-time">
+          <optgroup label="上午">
+            <option value="08:00">08:00 – 09:00</option>
+            <option value="09:00">09:00 – 10:00</option>
+            <option value="10:00">10:00 – 11:00</option>
+          </optgroup>
+          <optgroup label="下午">
+            <option value="13:00">13:00 – 14:00</option>
+            <option value="14:00">14:00 – 15:00</option>
+            <option value="15:00">15:00 – 16:00</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="modal-field">
+        <label>安排星期</label>
+        <div class="modal-day-row" id="m-day-row">
+          <button class="modal-day-btn" data-day="1">週一</button>
+          <button class="modal-day-btn" data-day="2">週二</button>
+          <button class="modal-day-btn" data-day="3">週三</button>
+          <button class="modal-day-btn" data-day="4">週四</button>
+          <button class="modal-day-btn" data-day="5">週五</button>
+          <button class="modal-day-btn uncertain" data-day="0">不確定</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-msg" id="modal-msg"></div>
+    <div class="modal-footer">
+      <button class="btn-delete" onclick="deletePatient()">刪除</button>
+      <button class="btn-save" id="btn-save" onclick="savePatient()">儲存變更</button>
     </div>
   </div>
 </div>
 
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+import { getFirestore, collection, addDoc, deleteDoc, updateDoc, doc, onSnapshot, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 
 const firebaseConfig = {
@@ -235,6 +311,8 @@ const TIME_LABELS = {
 let patients = [];
 let selectedDays = new Set();
 let unsubscribe = null;
+let editingDocId = null;
+let modalSelectedDay = null;
 
 // ── 登入/登出 ──
 window.doLogin = async function() {
@@ -265,12 +343,10 @@ window.doLogout = async function() {
   await signOut(auth);
 };
 
-// Enter 鍵觸發登入
 document.getElementById('l-pass').addEventListener('keydown', e => {
   if (e.key === 'Enter') window.doLogin();
 });
 
-// ── 監聽登入狀態 ──
 onAuthStateChanged(auth, user => {
   if (user) {
     document.getElementById('login-screen').style.display = 'none';
@@ -280,7 +356,6 @@ onAuthStateChanged(auth, user => {
   } else {
     document.getElementById('login-screen').style.display = 'flex';
     document.getElementById('main-screen').style.display = 'none';
-    document.getElementById('table-wrap').innerHTML = '<div class="loading-overlay">載入資料中...</div>';
   }
 });
 
@@ -294,10 +369,7 @@ function startListening() {
       document.getElementById('submit-btn').disabled = false;
       renderTable();
     },
-    err => {
-      setStatus('error', '連線失敗');
-      console.error(err);
-    }
+    err => { setStatus('error', '連線失敗'); }
   );
 }
 
@@ -314,6 +386,7 @@ function showMsg(txt, type='success') {
   setTimeout(() => m.style.display = 'none', 2500);
 }
 
+// ── 新增排程 ──
 document.querySelectorAll('.day-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     const d = btn.dataset.day;
@@ -349,20 +422,87 @@ window.addPatient = async function() {
   btn.disabled = false;
 };
 
-window.removePatient = async function(docId) {
+// ── Modal 編輯 ──
+window.openEdit = function(docId) {
+  const p = patients.find(x => x.docId === docId);
+  if (!p) return;
+  editingDocId = docId;
+  document.getElementById('m-name').value = p.name;
+  document.getElementById('m-id').value = p.pid;
+  document.getElementById('m-pts').value = String(p.pts);
+  document.getElementById('m-time').value = p.time;
+
+  // 設定星期按鈕（單選，顯示目前的星期）
+  modalSelectedDay = String(p.day);
+  document.querySelectorAll('.modal-day-btn').forEach(btn => {
+    btn.classList.toggle('selected', btn.dataset.day === modalSelectedDay);
+  });
+
+  document.getElementById('modal-msg').style.display = 'none';
+  document.getElementById('modal-backdrop').classList.add('open');
+};
+
+document.querySelectorAll('.modal-day-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    modalSelectedDay = btn.dataset.day;
+    document.querySelectorAll('.modal-day-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+  });
+});
+
+window.closeModal = function() {
+  document.getElementById('modal-backdrop').classList.remove('open');
+  editingDocId = null;
+};
+
+window.handleBackdropClick = function(e) {
+  if (e.target === document.getElementById('modal-backdrop')) closeModal();
+};
+
+window.savePatient = async function() {
+  if (!editingDocId) return;
+  const name = document.getElementById('m-name').value.trim();
+  const pid = document.getElementById('m-id').value.trim();
+  const pts = document.getElementById('m-pts').value;
+  const time = document.getElementById('m-time').value;
+  if (!name || !pid || !pts || !time || modalSelectedDay === null) {
+    showModalMsg('請填寫所有欄位'); return;
+  }
+  const saveBtn = document.getElementById('btn-save');
+  saveBtn.disabled = true; saveBtn.textContent = '儲存中...';
   try {
-    await deleteDoc(doc(db, 'patients', docId));
+    await updateDoc(doc(db, 'patients', editingDocId), {
+      name, pid, pts: parseInt(pts), time, day: parseInt(modalSelectedDay)
+    });
+    closeModal();
   } catch(e) {
-    showMsg('刪除失敗：' + e.message, 'error');
+    showModalMsg('儲存失敗：' + e.message);
+  }
+  saveBtn.disabled = false; saveBtn.textContent = '儲存變更';
+};
+
+window.deletePatient = async function() {
+  if (!editingDocId) return;
+  if (!confirm('確定要刪除此個案排程？')) return;
+  try {
+    await deleteDoc(doc(db, 'patients', editingDocId));
+    closeModal();
+  } catch(e) {
+    showModalMsg('刪除失敗：' + e.message);
   }
 };
 
+function showModalMsg(txt) {
+  const m = document.getElementById('modal-msg');
+  m.textContent = txt; m.className = 'modal-msg error'; m.style.display = 'block';
+}
+
+// ── 渲染表格 ──
 function cellContent(time, dayKey) {
   const pts = patients.filter(p => p.time === time && p.day === dayKey);
   if (!pts.length) return '<span class="empty-cell">–</span>';
   return pts.map(p =>
-    `<span class="patient-chip${dayKey===0?' uncertain-chip':''}">
-      <button class="remove-btn" onclick="removePatient('${p.docId}')" title="移除">✕</button>
+    `<span class="patient-chip${dayKey===0?' uncertain-chip':''}" onclick="openEdit('${p.docId}')" title="點擊編輯">
       <span class="p-name">${p.name}</span><br>
       <span class="p-id">${p.pid}</span>
       <span class="p-pts"> · ${p.pts}點</span>
