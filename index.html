@@ -351,7 +351,7 @@ let patients = [];
 let selectedDays = new Set();
 let unsubscribe = null;
 let editingDocId = null;
-let modalSelectedDay = null;
+let modalSelectedDays = new Set();
 let modalSelectedColor = 'blue';
 
 // ── 登入/登出 ──
@@ -479,9 +479,9 @@ window.openEdit = function(docId) {
   document.getElementById('m-id').value = p.pid;
   document.getElementById('m-pts').value = String(p.pts);
   document.getElementById('m-time').value = p.time;
-  modalSelectedDay = String(p.day);
+  modalSelectedDays = new Set([String(p.day)]);
   document.querySelectorAll('.modal-day-btn').forEach(btn => {
-    btn.classList.toggle('selected', btn.dataset.day === modalSelectedDay);
+    btn.classList.toggle('selected', modalSelectedDays.has(btn.dataset.day));
   });
   // 顏色
   selectColor(p.color || 'blue');
@@ -491,9 +491,9 @@ window.openEdit = function(docId) {
 
 document.querySelectorAll('.modal-day-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    modalSelectedDay = btn.dataset.day;
-    document.querySelectorAll('.modal-day-btn').forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
+    const d = btn.dataset.day;
+    if (modalSelectedDays.has(d)) { modalSelectedDays.delete(d); btn.classList.remove('selected'); }
+    else { modalSelectedDays.add(d); btn.classList.add('selected'); }
   });
 });
 
@@ -512,15 +512,16 @@ window.savePatient = async function() {
   const pid = document.getElementById('m-id').value.trim();
   const pts = document.getElementById('m-pts').value;
   const time = document.getElementById('m-time').value;
-  if (!name || !pid || !pts || !time || modalSelectedDay === null) {
+  if (!name || !pid || !pts || !time || modalSelectedDays.size === 0) {
     showModalMsg('請填寫所有欄位'); return;
   }
   const saveBtn = document.getElementById('btn-save');
   saveBtn.disabled = true; saveBtn.textContent = '儲存中...';
   try {
-    await updateDoc(doc(db, 'patients', editingDocId), {
-      name, pid, pts: parseInt(pts), time, day: parseInt(modalSelectedDay), color: modalSelectedColor
-    });
+    await deleteDoc(doc(db, 'patients', editingDocId));
+    for (const day of modalSelectedDays) {
+      await addDoc(colRef, { name, pid, pts: parseInt(pts), time, day: parseInt(day), color: modalSelectedColor, createdAt: Date.now() });
+    }
     closeModal();
   } catch(e) {
     showModalMsg('儲存失敗：' + e.message);
